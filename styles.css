@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background: url('https://cdn.glitch.global/bcd14a2b-fffd-406f-8a0c-f0ccc8eaea6f/48fdfb2d8a6984b4258445d571fdb3d6.gif?v=1737041029952') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Times New Roman', serif;
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+}
+
+a {
+  color: white;
+}
+
+/* Title */
+h1 {
+    font-family: 'Pinyon Script', cursive;
+    color: rgb(0 0 255);
+    font-size: 7rem;
+    margin-top: 2rem;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Intro text (placed right below h1) */
+.intro-text {
+    font-size: 1.5rem;
+  color: white;
+    text-shadow: 1.5px 1.5px 1.5px #0000FF;
+    margin-top: 2em; /* Brings it right below the title */
+  margin-bottom:.5em;
+}
+
+/* Moves the content text higher */
+.content {
+    text-align: center;
+    font-size: 1.4rem;
+    text-shadow: .5px 1px 2.8px rgba(0, 0, 0, 1);
+    transition: opacity 0.3s ease-in-out;
+    margin-top: -3rem; /* Moves it up */
+}
+
+/* Image Row */
+.image-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    position: fixed;
+    bottom: 1vw; /* Moves images lower */
+    left: 0;
+    background: transparent;
+    padding: 10px 0;
+}
+
+/* Individual Project Container */
+.project {
+    text-align: center;
+    margin: 0 20px;
+}
+
+/* Images */
+.project img {
+    width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px; /* Reducing extra space */
+    cursor: pointer;
+}
+
+/* Project labels */
+.project-label {
+    font-family: 'Pinyon Script', cursive;
+    color: yellow;
+    font-size: 1.8rem;
+    margin-bottom: 2px; /* Moves it closer to the image */
+}
+
+/* View project link */
+.project p {
+    margin: 2px 0; /* Reducing space between labels and link */
+}
+
+/* Hover text max width */
+.content p {
+    max-width: 70vw;
+    margin: 0 auto;
+  color: yellow;
+}
+
+.credits {
+  font-size: 1rem;
+  line-height: 1.14;
+  display: block;
+  margin-top: 0.2rem;
+  color: yellow; /* optional: subtle blue tint */
+  margin-bottom: -14px;
+}
+

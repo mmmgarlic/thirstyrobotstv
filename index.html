@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thirsty Robots</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    #popup-blocked-warning {
+      display: none;
+      color: red;
+      font-weight: bold;
+      margin-top: 1em;
+    }
+  </style>
+  <script>
+    let remoteWindow;
+    let idleTimeout;
+    let idleCycle;
+    const idleDelay = 45000;
+    const cycleInterval = 18000;
+
+    const urls = [
+      "https://thirstyrobot.glitch.me/",
+      "https://islandrobot.glitch.me/",
+      "https://waterpopup.glitch.me/"
+    ];
+    let currentIdx = 0;
+
+    function openOrFocusRemote() {
+      const screenFeatures = `left=0,top=0,width=${screen.availWidth},height=${screen.availHeight},resizable=yes,scrollbars=yes,toolbar=no,location=no,status=no`;
+      if (!remoteWindow || remoteWindow.closed) {
+        remoteWindow = window.open(urls[0], 'remoteMonitor', screenFeatures);
+
+        if (!remoteWindow) {
+          document.getElementById("popup-blocked-warning").style.display = "block";
+        }
+      } else {
+        remoteWindow.focus();
+      }
+    }
+
+    function loadRemoteSite(index) {
+      openOrFocusRemote();
+      if (remoteWindow) {
+        remoteWindow.location.href = urls[index];
+        currentIdx = index;
+        resetIdleCycle();
+      }
+    }
+
+    function startIdleCycle() {
+      idleCycle = setInterval(() => {
+        currentIdx = (currentIdx + 1) % urls.length;
+        if (remoteWindow && !remoteWindow.closed) {
+          remoteWindow.location.href = urls[currentIdx];
+        }
+      }, cycleInterval);
+    }
+
+    function resetIdleCycle() {
+      clearInterval(idleCycle);
+      clearTimeout(idleTimeout);
+      idleTimeout = setTimeout(() => {
+        startIdleCycle();
+      }, idleDelay);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.addEventListener("click", resetIdleCycle);
+      document.body.addEventListener("mousemove", resetIdleCycle);
+
+      // 👇 This listens for activity from the popup window
+      window.addEventListener("message", (event) => {
+        if (event.data === "user-active") {
+          resetIdleCycle();
+        }
+      });
+    });
+
+    function updateContent(text) {
+      document.getElementById("content").innerHTML = `<p>${text}</p>`;
+    }
+
+    function resetContent() {
+      document.getElementById("content").innerHTML = `<p>Thirsty Robots is a series of playful interventions that explore our growing reliance on Artificial Intelligence and the hidden environmental cost behind it — specifically, AI’s water usage.<br><br>This project – designed and coded by Anaya Maheshwari – was inspired by nascent conversations seen online about the ecological impact of AI and the noticeable lack of transparency from the companies leading this change.<br><br>As AI becomes embedded in everything from washing machines to wearables, questions about sustainability are being drowned out by how quickly this technology is being adopted.</p>`;
+    }
+  </script>
+</head>
+<body>
+  <h1>Thirsty Robots</h1>
+
+  <div class="content" id="content">
+    <p>Thirsty Robots is a series of playful interventions that explore our growing reliance on Artificial Intelligence and the hidden environmental cost behind it — specifically, AI’s water usage.<br><br>This project – designed and coded by Anaya Maheshwari – was inspired by nascent conversations seen online about the ecological impact of AI and the noticeable lack of transparency from the companies leading this change.<br><br>As AI becomes embedded in everything from washing machines to wearables, questions about sustainability are being drowned out by how quickly this technology is being adopted.</p>
+  </div>
+
+  <p class="intro-text">(Hover over a project to read more. Move your mouse  ↑↑↑  to control the TV.)</p>
+
+  <div class="image-row">
+    <div class="project"
+         onmouseover="updateContent('AI models, especially large ones, consume significant amounts of water for cooling data centers for AI systems. While estimates vary, independent studies show that AI systems – like GPT models – can consume several bottles of water per query. The true scale of AI’s water footprint remains hard to pinpoint due to a lack of transparency from the companies behind these technologies.<br><br>On Thirsty Robot #1, users interact with a basic chatbot; the interface is stripped-down, with each visit restarting the session (avoiding the need for a database). As users interact, a “water bottle wall” on the left visually tracks the session’s water consumption, and also compares this water usage to that of a standard Google search to highlight the inefficiency of AI for simple tasks.')"
+         onmouseout="resetContent()">
+      <img src="https://cdn.glitch.global/08aa8c55-95ae-4019-8592-fa636a905055/Screenshot%202025-01-24%20at%205.02.37%20PM.png?v=1737738974999"
+           onclick="loadRemoteSite(0)" alt="Thirsty Robot #1">
+      <p class="project-label">Thirsty Robot #1</p>
+      <p><a href="#" onclick="loadRemoteSite(0); return false;">View Project</a></p>
+    </div>
+
+    <div class="project"
+         onmouseover="updateContent('Thirsty Robot #2 features the same chatbot from Thirsty Robot #1, but offers a more immersive experience, with a hand-drawn, crayon-like aesthetic. The chatbot sits on a cliffside on a deserted island, surrounded by rising water. As users ask questions, the sea level gradually rises, eventually flooding the screen, referencing the “blue screen of death.”<br><br>This site aims to connect small, seemingly individual actions with their cumulative environmental cost, blending playful visuals with a serious message.<br><br>AI chatbot coded using OpenAI API.')"
+         onmouseout="resetContent()">
+      <img src="https://cdn.glitch.global/08aa8c55-95ae-4019-8592-fa636a905055/Screenshot%202025-01-24%20at%205.03.35%20PM.png?v=1737738980107"
+           onclick="loadRemoteSite(1)" alt="Thirsty Robot #2">
+      <p class="project-label">Thirsty Robot #2</p>
+      <p><a href="#" onclick="loadRemoteSite(1); return false;">View Project</a></p>
+    </div>
+
+    <div class="project"
+         onmouseover="updateContent(`Thirsty Robot #3 takes a maximalist approach, inspired by 1990s web design. The screen is filled with water, which users must drain by clicking rapidly anywhere on the screen. As the water recedes, pop-ups appear, sharing statistics about AI water usage.<br><br>It’s chaotic, but intentionally so — a mix of the past and present, blending nostalgic internet aesthetics with modern concerns, to get people thinking about the changing state of the internet + technology’s frightening pace of development.<br><br><span class='credits'>GIFS sourced from <a href='https://gifcities.org' target='_blank'>gifcities.org</a> | Wave animation & code by <a href='https://melonking.net' target='_blank'>melonking.net</a> | <br>Bubble Cursor from <a href='https://github.com/tholman/cursor-effects?tab=readme-ov-file#90s-cursor-effects' target='_blank' style='text-decoration: underline;'>90s Cursor Effects pack</a> on Github by @Tholman</span>`)"
+         onmouseout="resetContent()">
+      <img src="https://cdn.glitch.global/08aa8c55-95ae-4019-8592-fa636a905055/Screenshot%202025-01-24%20at%205.16.48%20PM.png?v=1737739023044"
+           onclick="loadRemoteSite(2)" alt="Thirsty Robot #3">
+      <p class="project-label">Thirsty Robot #3</p>
+      <p><a href="#" onclick="loadRemoteSite(2); return false;">View Project</a></p>
+    </div>
+  </div>
+
+  <p id="popup-blocked-warning">⚠️ Popup blocked! Please allow popups for this site to launch the monitor window.</p>
+</body>
+</html>
